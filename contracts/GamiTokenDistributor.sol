@@ -50,8 +50,9 @@
 pragma solidity ^0.8.17;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract GamiTokenDistributor {
+contract GamiTokenDistributor is ReentrancyGuard{
 
     // 131,256,399.938392 GAMI old Total Supply multiplied by 10 ** 12 for 18 decimals
     uint256 public constant MAX_SUPPLY = 131256399938392 * 10 ** 12;
@@ -92,11 +93,13 @@ contract GamiTokenDistributor {
     address[] public addressesToSend;
     mapping(address => uint256) public addressToSendAmounts;
 
+    event TokensSent(address indexed _to, uint256 _amount);
+
     constructor() {
         initializer = msg.sender;
     }
 
-    function initializeAddressesAndSendTokens(address _gamiToken, address[] calldata _sendingAdresses ) external {
+    function initializeAddressesAndSendTokens(address _gamiToken, address[] calldata _sendingAdresses ) external nonReentrant {
         require(initializer == msg.sender, "Only initializer");
         require(!isInitialized, "Already initialized");
         require(_sendingAdresses.length == 9, "Invalid address count");
@@ -151,6 +154,7 @@ contract GamiTokenDistributor {
                 require(gamiToken.balanceOf(address(this)) == (MAX_SUPPLY - LOCKED_SUPPLY) , "Locked supply not calculated correctly");
             }
             gamiToken.transfer( addressesToSend[i], addressToSendAmounts[addressesToSend[i]]);
+            emit TokensSent(addressesToSend[i], addressToSendAmounts[addressesToSend[i]]);
         }
     }
 
