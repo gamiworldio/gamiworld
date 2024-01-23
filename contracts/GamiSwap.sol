@@ -64,8 +64,7 @@ contract GamiSwap is ReentrancyGuard  {
     IERC20 newGami;
 
     uint256 public totalSwapped;
-
-    uint256 public constant MAX_SUPPLY = 900000000 * 10 ** 18;
+    mapping(address => uint256) public addressToSwappedAmount;
 
     event Swapped(address swapper, uint256 amount, uint256 timestamp, uint256 totalSwappedAmount);
 
@@ -88,6 +87,7 @@ contract GamiSwap is ReentrancyGuard  {
         newGami.safeTransfer(msg.sender, amount18Decimals);
 
         totalSwapped += amount18Decimals;
+        addressToSwappedAmount[msg.sender] += amount18Decimals;
 
         emit Swapped(msg.sender, amount18Decimals, block.timestamp, totalSwapped);
         
