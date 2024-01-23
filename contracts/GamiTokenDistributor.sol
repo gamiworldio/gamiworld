@@ -107,6 +107,8 @@ contract GamiTokenDistributor {
         gamiTokenAddress = _gamiToken;
         gamiToken = IERC20(gamiTokenAddress);
 
+        require(gamiToken.balanceOf(address(this)) == MAX_SUPPLY, "Max supply not sent to distributor");
+
         addressesToSend = _sendingAdresses;
 
         advisorsLockAddress = _sendingAdresses[0];
@@ -137,6 +139,8 @@ contract GamiTokenDistributor {
         addressToSendAmounts[swapContractAddress] = SWAP_CONTRACT_SUPPLY;
 
         sendTokens();   
+
+        require(gamiToken.balanceOf(address(this)) == 0, "Not all tokens sent");
         isInitialized = true;
     }
 
