@@ -146,6 +146,10 @@ contract GamiTokenDistributor {
 
     function sendTokens() internal {
         for(uint256 i = 0; i < addressesToSend.length; i++) {
+            if( i == (addressesToSend.length - 1) ){
+                // Last sending account is the swap contract, others are locked accounts
+                require(gamiToken.balanceOf(address(this)) == (MAX_SUPPLY - LOCKED_SUPPLY) , "Locked supply not calculated correctly");
+            }
             gamiToken.transfer( addressesToSend[i], addressToSendAmounts[addressesToSend[i]]);
         }
     }

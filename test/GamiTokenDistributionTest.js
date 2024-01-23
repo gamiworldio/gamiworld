@@ -142,5 +142,15 @@ describe("GamiLock", function () {
             expect(totalLock).to.equal(await gamiTokenDistributor.MAX_SUPPLY());
         });
 
+        it ("Should gamiSwapBalance be equal totalSupply - locked supply", async function () {
+            let totalSupply = await gamiTokenDistributor.MAX_SUPPLY();
+            let lockedSupply = await gamiTokenDistributor.LOCKED_SUPPLY();
+            let totalSwapBalance = await gamiTokenDistributor.SWAP_CONTRACT_SUPPLY();
+            console.log("Total supply = ", formatEther(totalSupply) );
+            console.log("Locked supply = ", formatEther(lockedSupply) );
+            console.log("Total swap balance = ", formatEther(totalSwapBalance) );
+            expect(totalSupply - lockedSupply).to.equal(totalSwapBalance);
+        });
+
     });
 });
