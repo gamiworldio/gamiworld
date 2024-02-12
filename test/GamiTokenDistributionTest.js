@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { parseEther, formatEther, parseUnits, formatUnits } = require("ethers/utils");
 
-describe("GamiLock", function () {
+describe("GamiTokenDistributor", function () {
     let gamiTokenDistributorAddress, gamiTokenDistributor;
     let gami, gamiTokenAddress;
     let oldGamiTokenAddress = "0x1236a887ef31b4d32e1f0a2b5e4531f52cec7e75";
