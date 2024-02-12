@@ -14,6 +14,7 @@ contract GamiLock is ReentrancyGuard {
     address public immutable gamiTokenAddress;
     uint256 public constant period = 30 days;
     uint256 public releaseRate;
+    uint256 public constant baseRate = 10000000;
     uint256 public constant lockStartTime = 1701388801;
 
     event ReleaseInfoSet(uint256 startTime, uint256 rate);
@@ -60,7 +61,7 @@ contract GamiLock is ReentrancyGuard {
         if (periodsPassed == 0) {
             return 0;
         }
-        uint256 totalClaimableSoFar = info.totalAmount * releaseRate * periodsPassed / 10000000;
+        uint256 totalClaimableSoFar = info.totalAmount * releaseRate * periodsPassed / baseRate;
         if (totalClaimableSoFar > info.totalAmount) {
             totalClaimableSoFar = info.totalAmount;
         }
