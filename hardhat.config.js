@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require('dotenv').config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -30,6 +31,11 @@ module.exports = {
         ? [process.env.DEPLOY_PRIVATE_KEY]
         : [],
       chainId: 56,
+    },
+  },
+  etherscan: {
+    apiKey: {
+      bsc: process.env.BSCSCAN_API_KEY,
     },
   },
 };
